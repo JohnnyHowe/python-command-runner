@@ -41,3 +41,6 @@ For pull requests, include:
 - Clear summary of behavior changes.
 - Test evidence (exact command + result).
 - Any import/API changes called out explicitly.
+
+# Jon
+Make all planning docs in scratchpad folder
