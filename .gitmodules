@@ -1,0 +1,3 @@
+[submodule "scripts/python_pretty_print"]
+	path = scripts/python_pretty_print
+	url = https://github.com/JohnnyHowe/python-pretty-print
