@@ -1,4 +1,3 @@
-import shlex
 from typing import Iterable, Optional, Union
 
 from .pretty_print import pretty_print
