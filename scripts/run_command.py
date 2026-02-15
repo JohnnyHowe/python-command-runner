@@ -6,10 +6,7 @@ import threading
 from enum import Enum
 from pathlib import Path
 from typing import Iterator
-try:
-	from ..python_colland_line_helpers.pretty_print import *
-except ImportError:
-	from pretty_print import *
+from .pretty_print import ERROR
 
 
 class OutputSource(Enum):
@@ -22,7 +19,7 @@ class OutputSource(Enum):
 
 
 LOG_COLORS = {
-	OutputSource.STDERR: Colors.ERROR,
+	OutputSource.STDERR: ERROR,
 }
 
 
@@ -60,8 +57,15 @@ def run_command(*args, **kwargs) -> Iterator[OutputLine]:
 	cwd = str(Path(kwargs.pop("cwd", os.getcwd())).resolve())
 
 	p = subprocess.Popen(*args, cwd=cwd, **kwargs)
-	for pipe_name, line in merge_pipes(STDOUT=p.stdout, STDERR=p.stderr):
-		yield OutputLine(line, OutputSource[pipe_name])
+	try:
+		for pipe_name, line in merge_pipes(STDOUT=p.stdout, STDERR=p.stderr):
+			yield OutputLine(line, OutputSource[pipe_name])
+	finally:
+		if p.stdout:
+			p.stdout.close()
+		if p.stderr:
+			p.stderr.close()
+		p.wait()
 
 
 def merge_pipes(**named_pipes):

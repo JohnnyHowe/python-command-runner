@@ -1,11 +1,7 @@
 import shlex
-import sys
-from pathlib import Path
 from typing import Iterable, Optional, Union
 
-# TODO find better solution to this
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from pretty_print import *
+from .pretty_print import pretty_print
 
 
 class Command:

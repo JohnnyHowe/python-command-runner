@@ -2,7 +2,6 @@ import subprocess
 import time
 from typing import Optional
 
-from pretty_print import *
 from .command import Command
 from .command_output import CommandOutput
 
