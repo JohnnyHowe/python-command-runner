@@ -1,4 +1,4 @@
-from output_source import OutputSource
+from src.output_source import OutputSource
 
 
 class OutputLine:

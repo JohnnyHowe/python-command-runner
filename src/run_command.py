@@ -1,13 +1,12 @@
 import os
 import subprocess
 
-from enum import Enum
 from pathlib import Path
 from typing import Iterator
 
-from output_line import OutputLine
-from output_source import OutputSource
-from merge_pipes import merge_pipes
+from src.output_line import OutputLine
+from src.output_source import OutputSource
+from src.merge_pipes import merge_pipes
 
 
 def run_command(*args, **kwargs) -> Iterator[OutputLine]:
