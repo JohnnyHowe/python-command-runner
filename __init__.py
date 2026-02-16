@@ -1,13 +1,5 @@
-from .src import Command
-from .src import CommandOutput
-from .src import CommandRunner
-from .src import OutputLine
-from .src import OutputSource
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
 
-__all__ = [
-    "Command",
-    "CommandOutput",
-    "CommandRunner",
-    "OutputLine",
-    "OutputSource",
-]
+from src import *

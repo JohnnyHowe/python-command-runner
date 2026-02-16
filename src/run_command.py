@@ -5,35 +5,9 @@ from enum import Enum
 from pathlib import Path
 from typing import Iterator
 
-from .merge_pipes import merge_pipes
-
-
-class OutputSource(Enum):
-	STDOUT = 0
-	STDERR = 1
-	OTHER = 2
-
-	def __str__(self):
-		return self.name
-
-
-class OutputLine:
-	source: OutputSource
-	test: str
-
-	def __init__(self, text: str, source: OutputSource = OutputSource.OTHER) -> None:
-		self.text = text
-		self.source = source
-
-	def __repr__(self):
-		return str(self)
-
-	def __str__(self):
-		return f"[{str(self.source)}] {self.text}"
-
-	def __iter__(self):
-		yield self.text
-		yield self.source
+from output_line import OutputLine
+from output_source import OutputSource
+from merge_pipes import merge_pipes
 
 
 def run_command(*args, **kwargs) -> Iterator[OutputLine]:

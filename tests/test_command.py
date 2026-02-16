@@ -1,21 +1,27 @@
+from pathlib import Path
+import sys
 import unittest
 
-# Import the class under test.
-from python_command_runner import Command
+# import os
+# cwd = Path(os.getcwd()).resolve()
+# print("cwd=" + str(cwd))
+# for item in cwd.iterdir():
+#     print(f"\t{item.relative_to(cwd)}")
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from __init__ import run_command
 
 
 class TestCommand(unittest.TestCase):
     # Test method names must start with `test_` so unittest discovery can find
     # and execute them automatically.
-    def test_as_list_with_only_executable(self):
-        # Arrange: create the object and set only the minimum required field.
-        cmd = Command()
-        cmd.executable = "python3"
-
-        # Act + Assert: call the method and verify exact output.
-        # `assertEqual(expected, actual)` fails with a helpful diff if values
-        # are different, which makes debugging straightforward.
-        self.assertEqual(["python3"], cmd.as_list())
+    def test_junk(self):
+        lines = list(run_command(["python3", "--version"]))
+        self.assertTrue(len(lines) == 1, f"Expected one line! Got: {lines}") 
+        print(lines[0])
+        print(lines[0].text)
+        self.assertTrue(lines[0].text.startswith("Python"), f"Expected line to start with \"python\". Got: {lines[0].text}") 
 
 
 # This allows running this file directly:
