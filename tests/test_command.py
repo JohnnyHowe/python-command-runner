@@ -1,10 +1,4 @@
-import sys
 import unittest
-from pathlib import Path
-
-# Ensure the src package is importable for test discovery.
-PACKAGE_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 
 # Import the class under test.
 from python_command_runner import Command

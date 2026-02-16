@@ -16,15 +16,15 @@ git submodule update --remote --merge third_party/python_command_runner
 ```
 
 ## Import from the Submodule
-When used as a submodule, import from its `src` directory:
+When used as a submodule, install it in editable mode once:
+
+```bash
+python3 -m pip install -e third_party/python_command_runner
+```
+
+Then import normally:
 
 ```python
-from pathlib import Path
-import sys
-
-REPO_ROOT = Path(__file__).resolve().parent
-sys.path.insert(0, str(REPO_ROOT / "third_party/python_command_runner/src"))
-
 from python_command_runner import Command, CommandRunner
 ```
 
@@ -40,9 +40,10 @@ runner.run()
 print("captured lines:", len(runner.output.stdout_lines))
 ```
 
-## Optional: Editable install (local development)
-If you want standard Python imports without `sys.path` setup:
+## Local Development
+From this repository root:
 
 ```bash
-python3 -m pip install -e third_party/python_command_runner
+python3 -m pip install -e .
+python3 -m unittest discover -s tests -v
 ```

@@ -1,7 +1,8 @@
-from .scripts.command import Command
-from .scripts.command_output import CommandOutput
-from .scripts.command_runner import CommandRunner
-from .scripts.run_command import OutputLine, OutputSource
+from .src import Command
+from .src import CommandOutput
+from .src import CommandRunner
+from .src import OutputLine
+from .src import OutputSource
 
 __all__ = [
     "Command",

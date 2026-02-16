@@ -5,7 +5,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Iterator
 
-from .mrege_pipes import merge_pipes
+from .merge_pipes import merge_pipes
 
 
 class OutputSource(Enum):
