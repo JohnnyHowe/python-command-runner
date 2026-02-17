@@ -15,7 +15,7 @@ class OutputLine:
 		return str(self)
 
 	def __str__(self):
-		return f"[{str(self.source)}] {self.text}"
+		return f"[{self.index}][{str(self.source)}] {self.text}"
 
 	def __iter__(self):
 		yield self.text
