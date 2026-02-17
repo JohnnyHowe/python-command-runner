@@ -7,10 +7,18 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from __init__ import OutputSource, run_command
-import run_command as run_command_module
+import src.run_command as run_command_module
 
 
 class TestRunCommandUnit(unittest.TestCase):
+    def _consume_generator_with_return_code(self, generator):
+        lines = []
+        while True:
+            try:
+                lines.append(next(generator))
+            except StopIteration as stop:
+                return lines, stop.value
+
     def test_passes_expected_popen_kwargs_and_closes_pipes(self):
         stdout_pipe = mock.Mock()
         stderr_pipe = mock.Mock()
@@ -40,6 +48,19 @@ class TestRunCommandUnit(unittest.TestCase):
         stdout_pipe.close.assert_called_once()
         stderr_pipe.close.assert_called_once()
         process.wait.assert_called_once()
+
+    def test_returns_exit_code_when_generator_completes(self):
+        process = mock.Mock()
+        process.stdout = mock.Mock()
+        process.stderr = mock.Mock()
+        process.wait.return_value = 7
+
+        with mock.patch.object(run_command_module.subprocess, "Popen", return_value=process):
+            with mock.patch.object(run_command_module, "merge_pipes", return_value=iter([])):
+                lines, return_code = self._consume_generator_with_return_code(run_command(["echo", "x"]))
+
+        self.assertEqual(lines, [])
+        self.assertEqual(return_code, 7)
 
     def test_preserves_user_supplied_stdin(self):
         process = mock.Mock()

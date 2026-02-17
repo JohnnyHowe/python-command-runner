@@ -10,6 +10,14 @@ from __init__ import OutputLine, OutputSource, run_command
 
 
 class TestRunCommandIntegration(unittest.TestCase):
+    def _consume_generator_with_return_code(self, generator):
+        lines = []
+        while True:
+            try:
+                lines.append(next(generator))
+            except StopIteration as stop:
+                return lines, stop.value
+
     def test_collects_stdout_and_stderr_with_correct_source(self):
         code = "import sys; print('out'); print('err', file=sys.stderr)"
         lines = list(run_command(["python3", "-c", code]))
@@ -50,6 +58,15 @@ class TestRunCommandIntegration(unittest.TestCase):
 
         self.assertEqual(len(lines), 1)
         self.assertEqual(Path(lines[0].text), temp_dir.resolve())
+
+    def test_returns_nonzero_exit_code(self):
+        code = "import sys; print('bad', file=sys.stderr); sys.exit(4)"
+        lines, return_code = self._consume_generator_with_return_code(run_command(["python3", "-c", code]))
+
+        self.assertEqual(return_code, 4)
+        self.assertEqual(len(lines), 1)
+        self.assertEqual(lines[0].source, OutputSource.STDERR)
+        self.assertEqual(lines[0].text, "bad")
 
 
 if __name__ == "__main__":

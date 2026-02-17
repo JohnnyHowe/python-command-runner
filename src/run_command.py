@@ -3,7 +3,7 @@ import subprocess
 
 from pathlib import Path
 import threading
-from typing import Iterator, Optional
+from typing import Generator, Optional
 
 from src.output_line import OutputLine
 from src.output_source import OutputSource
@@ -12,7 +12,7 @@ from src.merge_pipes import merge_pipes
 
 def run_command(
 	*args, timeout_seconds: Optional[int] = None, **kwargs
-) -> Iterator[OutputLine]:
+) -> Generator[OutputLine, None, Optional[int]]:
 	"""
 	Wrap subprocess.Popen yielding every output line as an OutputLine object.
 	"""
@@ -51,4 +51,6 @@ def run_command(
 			process.stdout.close()
 		if process.stderr:
 			process.stderr.close()
-		process.wait()
+		returncode = process.wait()
+
+	return returncode
