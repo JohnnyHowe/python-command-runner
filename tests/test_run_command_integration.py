@@ -3,10 +3,9 @@ import unittest
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from __init__ import OutputLine, OutputSource, run_command
+from python_command_runner import OutputLine, OutputSource, run_command
 
 
 class TestRunCommandIntegration(unittest.TestCase):

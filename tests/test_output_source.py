@@ -2,10 +2,9 @@ import sys
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from __init__ import OutputSource
+from python_command_runner import OutputSource
 
 
 class TestOutputSource(unittest.TestCase):

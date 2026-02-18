@@ -3,10 +3,9 @@ import unittest
 from io import StringIO
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from merge_pipes import merge_pipes
+from python_command_runner.merge_pipes import merge_pipes
 from tests._test_utils import DelayedPipe
 
 

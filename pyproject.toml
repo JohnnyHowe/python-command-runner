@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-command-runner"
+version = "0.1.0"
+description = "Run subprocess commands and stream output lines with source metadata."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Jon" }]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["python_command_runner*"]

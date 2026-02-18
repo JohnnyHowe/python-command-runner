@@ -12,10 +12,34 @@ Small Python utility for running subprocess commands and streaming output lines 
 
 ## Installation
 
-From this repository root:
+### From GitHub
+
+```bash
+pip install "python-command-runner @ git+https://github.com/OWNER/REPO.git"
+```
+
+### Session-only virtualenv workflow
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install "python-command-runner @ git+https://github.com/OWNER/REPO.git"
+
+python3 path/to/your_script.py
+
+deactivate
+```
+
+### Local editable install
 
 ```bash
 python3 -m pip install -e .
+```
+
+## Tests
+
+```bash
+python3 -m unittest discover -s tests -v
 ```
 
 ## API Notes

@@ -1,13 +1,14 @@
+import importlib
 import sys
 import unittest
 from pathlib import Path
 from unittest import mock
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from __init__ import OutputSource, run_command
-import src.run_command as run_command_module
+from python_command_runner import OutputSource, run_command
+
+run_command_module = importlib.import_module("python_command_runner.run_command")
 
 
 class TestRunCommandUnit(unittest.TestCase):
