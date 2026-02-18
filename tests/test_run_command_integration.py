@@ -1,4 +1,5 @@
 import sys
+import time
 import unittest
 from pathlib import Path
 from tempfile import NamedTemporaryFile
@@ -31,13 +32,13 @@ class TestRunCommandIntegration(unittest.TestCase):
         self.assertEqual(by_source[OutputSource.STDOUT], ["out"])
         self.assertEqual(by_source[OutputSource.STDERR], ["err"])
 
-    def test_defaults_stdin_to_devnull_and_process_does_not_hang(self):
-        code = "import sys; data = sys.stdin.read(); print('stdin:' + data)"
+    def test_runs_without_explicit_stdin(self):
+        code = "print('ok')"
         lines = list(run_command(["python3", "-c", code]))
 
         self.assertEqual(len(lines), 1)
         self.assertEqual(lines[0].source, OutputSource.STDOUT)
-        self.assertEqual(lines[0].text, "stdin:")
+        self.assertEqual(lines[0].text, "ok")
 
     def test_accepts_custom_stdin(self):
         code = "import sys; print(sys.stdin.read())"
@@ -66,6 +67,18 @@ class TestRunCommandIntegration(unittest.TestCase):
         self.assertEqual(len(lines), 1)
         self.assertEqual(lines[0].source, OutputSource.STDERR)
         self.assertEqual(lines[0].text, "bad")
+
+    def test_timeout_terminates_long_running_process(self):
+        code = "import time; time.sleep(5)"
+        start = time.monotonic()
+        lines, return_code = self._consume_generator_with_return_code(
+            run_command(["python3", "-c", code], timeout_seconds=0.1)
+        )
+        elapsed = time.monotonic() - start
+
+        self.assertEqual(lines, [])
+        self.assertLess(elapsed, 1.0)
+        self.assertNotEqual(return_code, 0)
 
 
 if __name__ == "__main__":

@@ -49,7 +49,7 @@ for line in run_command(["python3", "-c", "print('hello')"]):
 
 - Passes arguments to `subprocess.Popen`.
 - Always configures `stdout=subprocess.PIPE`, `stderr=subprocess.PIPE`, and `text=True`.
-- Defaults `stdin=subprocess.DEVNULL` if not provided.
+- Leaves `stdin` unchanged unless you pass it explicitly.
 - Resolves `cwd` to an absolute path (defaults to current working directory).
 - Yields `OutputLine` objects until process output is exhausted.
 - Returns the subprocess exit code when the generator completes.

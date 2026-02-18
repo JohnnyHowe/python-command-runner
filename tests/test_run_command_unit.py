@@ -43,7 +43,7 @@ class TestRunCommandUnit(unittest.TestCase):
         self.assertEqual(called_kwargs["stdout"], run_command_module.subprocess.PIPE)
         self.assertEqual(called_kwargs["stderr"], run_command_module.subprocess.PIPE)
         self.assertTrue(called_kwargs["text"])
-        self.assertEqual(called_kwargs["stdin"], run_command_module.subprocess.DEVNULL)
+        self.assertNotIn("stdin", called_kwargs)
         self.assertTrue(Path(called_kwargs["cwd"]).is_absolute())
 
         stdout_pipe.close.assert_called_once()
