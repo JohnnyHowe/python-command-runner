@@ -11,6 +11,24 @@ from .output_source import OutputSource
 from .run_with_timeout import run_with_timeout
 
 
+def run_command(
+    *args, timeout_seconds: Optional[int] = None, **kwargs
+) -> Generator[OutputLine, None, Optional[int]]:
+    """
+    Wrap subprocess.Popen yielding every output line as an OutputLine object.
+    """
+    cwd, popen_kwargs = _prepare_popen_kwargs(kwargs)
+    process = subprocess.Popen(*args, cwd=cwd, **popen_kwargs)
+    timeout_supervisor = _start_timeout_supervisor(process, timeout_seconds)
+
+    try:
+        yield from _yield_output_lines(process)
+    finally:
+        returncode = _cleanup_process(process, timeout_supervisor)
+
+    return returncode
+
+
 def _prepare_popen_kwargs(kwargs: dict) -> Tuple[str, dict]:
     popen_kwargs = dict(kwargs)
     popen_kwargs["stdout"] = subprocess.PIPE
@@ -58,23 +76,5 @@ def _cleanup_process(
 
     if timeout_supervisor and timeout_supervisor.is_alive():
         timeout_supervisor.join(timeout=0.01)
-
-    return returncode
-
-
-def run_command(
-    *args, timeout_seconds: Optional[int] = None, **kwargs
-) -> Generator[OutputLine, None, Optional[int]]:
-    """
-    Wrap subprocess.Popen yielding every output line as an OutputLine object.
-    """
-    cwd, popen_kwargs = _prepare_popen_kwargs(kwargs)
-    process = subprocess.Popen(*args, cwd=cwd, **popen_kwargs)
-    timeout_supervisor = _start_timeout_supervisor(process, timeout_seconds)
-
-    try:
-        yield from _yield_output_lines(process)
-    finally:
-        returncode = _cleanup_process(process, timeout_supervisor)
 
     return returncode
