@@ -6,7 +6,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from python_command_runner.merge_pipes import merge_pipes
-from tests._test_utils import DelayedPipe
+try:
+    from tests._test_utils import DelayedPipe
+except ModuleNotFoundError:
+    from _test_utils import DelayedPipe
 
 
 class TestMergePipes(unittest.TestCase):
