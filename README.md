@@ -1,35 +1,17 @@
 # python_command_runner
 Small Python wrapper around `subprocess` for building and running commands.
 
-## Use as a Git Submodule
-Add this repository as a submodule in your project:
+## Installation
+From this repository root:
 
 ```bash
-git submodule add <repo-url> third_party/python_command_runner
-git submodule update --init --recursive
-```
-
-Update later:
-
-```bash
-git submodule update --remote --merge third_party/python_command_runner
-```
-
-## Import from the Submodule
-When used as a submodule, install it in editable mode once:
-
-```bash
-python3 -m pip install -e third_party/python_command_runner
-```
-
-Then import normally:
-
-```python
-from python_command_runner import Command, CommandRunner
+python3 -m pip install -e .
 ```
 
 ## Basic Example
 ```python
+from python_command_runner import Command, CommandRunner
+
 command = Command()
 command.executable = "python3"
 command.subcommands = ["-c"]

@@ -1,4 +1,4 @@
-from src import *
+from python_command_runner import Command, CommandRunner
 
 command = Command()
 command.executable = "git"
